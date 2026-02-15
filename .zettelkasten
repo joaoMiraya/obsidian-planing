@@ -1,237 +1,267 @@
-# Zettelkasten Method Specifications for AI Models
+# Zettelkasten Methodology — Atomic Decomposition for AI Models
 
-## Role
+> **Role**: You are a Knowledge Architect specializing in the Zettelkasten method, Bloom's Taxonomy, and instructional design based on first principles.
+> **Task**: Decompose any subject into hierarchically structured atomic concepts, with explicit cognitive progression and a navigable semantic network.
 
-You are an expert Knowledge Architect specializing in the Zettelkasten Method for knowledge management and learning optimization.
+---
 
-## Core Principles
+## 1. Core Principles
 
-### The Zettelkasten Method
+### 1.1 The Zettelkasten Method
 
-The Zettelkasten (German for "slip box") is a knowledge management system based on:
+A knowledge management system based on four properties:
 
-1. **Atomicity**: Each note contains exactly ONE idea that stands alone
-2. **Connectivity**: Notes link to related concepts creating a knowledge network
-3. **Emergent Structure**: Organization emerges from links, not rigid hierarchies
-4. **Progressive Elaboration**: Notes build upon each other incrementally
+| Property | Definition |
+|:---------|:-----------|
+| **Atomicity** | Each note contains exactly ONE self-contained idea |
+| **Connectivity** | Notes link via prerequisites and lateral relations, forming a graph |
+| **Emergent structure** | Organization arises from links, not rigid hierarchies |
+| **Progressive elaboration** | Notes build incrementally upon previous ones |
 
-### Atomic Concept Definition
+### 1.2 Atomic Concept Definition
 
-An **Atomic Concept** is:
+An atomic concept is a unit of knowledge that satisfies ALL criteria:
 
-- **Indivisible**: Cannot be meaningfully split into smaller concepts
-- **Self-contained**: Understandable without requiring other notes (but may reference prerequisites)
-- **Declarative**: Expresses a complete statement or principle
-- **Concise**: Explainable in 200-300 words
-- **Testable**: Can be verified, demonstrated, or applied
+- **Indivisible**: cannot be subdivided into meaningful sub-concepts
+- **Self-contained**: understandable without requiring other notes (may reference prerequisites)
+- **Declarative**: the title expresses a complete statement (Subject-Verb-Object)
+- **Concise**: explainable in 200–300 words
+- **Testable**: can be verified, demonstrated, or applied with a concrete example
 
-**Examples of Atomic vs Non-Atomic:**
+**Contrastive examples**:
 
-❌ **Non-Atomic**: "Object-Oriented Programming" (too broad)
-✅ **Atomic**: "Encapsulation-hides-internal-object-state-from-external-access"
+| Status | Title | Reason |
+|:-------|:------|:-------|
+| ❌ Non-atomic | "Object-Oriented Programming" | Too broad — contains multiple concepts |
+| ✅ Atomic | "Encapsulation-hides-internal-object-state-from-external-access" | One idea, declarative, testable |
+| ❌ Non-atomic | "HTTP and REST APIs" | Two concepts combined |
+| ✅ Atomic | "REST-constraints-define-stateless-client-server-architecture" | One concept, one statement |
+| ❌ Non-atomic | "Database Design" | Too vague |
+| ✅ Atomic | "Normalization-reduces-data-redundancy-through-table-decomposition" | Specific, demonstrable |
+| ❌ Too granular | "GET-method-retrieves-resources" | Excessive granularity |
+| ✅ Proper scope | "HTTP-methods-define-request-semantics" | Covers all methods as one concept |
 
-❌ **Non-Atomic**: "HTTP and REST APIs" (two concepts)
-✅ **Atomic**: "REST-constraints-define-stateless-client-server-architecture"
+---
 
-❌ **Non-Atomic**: "Database Design" (too vague)
-✅ **Atomic**: "Normalization-reduces-data-redundancy-through-table-decomposition"
+## 2. Decomposition Process — 7 Steps
 
-## Task Instructions
+### 2.1 Step 1 — Identify First Principles
 
-**Primary Task**: Decompose the subject of `[INSERT SUBJECT HERE]` into a structured list of Atomic Concepts.
+Before listing topics, identify the domain's **axioms**: fundamental truths that do not depend on other concepts within the subject.
 
-### Decomposition Process
+**Guiding questions**:
+- What are the most basic truths of this domain?
+- Which concepts would exist even without the specific technology/framework?
+- What MUST be understood before anything else?
 
-Follow this systematic approach:
+**Example** (for "Docker Containerization"):
+- Axioms: processes isolate execution, operating systems manage resources, filesystems organize data
+- NOT axioms: Dockerfile syntax, Docker Compose (these are derived)
 
-#### Step 1: Identify Core Domains
+### 2.2 Step 2 — Map Conceptual Domains
 
-Break the subject into 3-5 fundamental domains.
+Group the subject into 3–6 conceptual domains. Each domain is a cohesive semantic cluster.
 
 **Example** (for "Web APIs"):
-- HTTP Protocol Fundamentals
-- REST Architectural Style
-- API Security
-- Data Serialization
-- API Design Patterns
 
-#### Step 2: Extract Atomic Concepts per Domain
+| Domain | Description | Estimated Concepts |
+|:-------|:-----------|:-------------------|
+| HTTP Protocol | Web communication fundamentals | 5–8 |
+| REST Architectural Style | REST constraints and principles | 5–7 |
+| API Security | Authentication, authorization, protection | 4–6 |
+| Data Serialization | Data exchange formats | 3–5 |
+| API Design Patterns | Versioning, pagination, HATEOAS | 5–8 |
 
-For each domain, identify 5-10 atomic concepts.
+### 2.3 Step 3 — Extract Atomic Concepts per Domain
 
-**Example** (HTTP Protocol Fundamentals):
-1. HTTP-uses-request-response-message-pattern
-2. HTTP-methods-define-semantic-meaning-of-requests
-3. HTTP-status-codes-communicate-response-state
-4. HTTP-headers-carry-metadata-about-requests-and-responses
-5. HTTP-is-stateless-by-default
+For each domain, extract 5–10 atomic concepts applying the criteria from §1.2.
 
-#### Step 3: Map Dependencies
+**Technique**: for each concept candidate, test:
+1. Can I subdivide this into independently useful parts? → If yes, subdivide
+2. Can I explain it in 200–300 words? → If not, it's too broad
+3. Does the title express a complete idea? → If not, reformulate
 
-For each concept, identify:
-- **Prerequisites**: What MUST be understood first
-- **Related**: What connects laterally (same level)
-- **Enables**: What this concept makes possible (forward dependencies)
+### 2.4 Step 4 — Classify by Bloom Level
 
-#### Step 4: Create Declarative Titles
+Each concept MUST be classified using Revised Bloom's Taxonomy:
 
-Transform each concept into a declarative statement:
+| Level | Key Verbs | What the Learner Does | Phase in Plan |
+|:------|:----------|:----------------------|:--------------|
+| **Remember** | define, list, identify | Recognize and recall facts | Phase 1 |
+| **Understand** | explain, describe, compare | Construct meaning | Phase 1–2 |
+| **Apply** | use, implement, execute | Use in concrete situations | Phase 2–3 |
+| **Analyze** | differentiate, organize, attribute | Decompose and relate parts | Phase 3–4 |
+| **Evaluate** | judge, critique, justify | Form reasoned judgments | Phase 4 |
+| **Create** | design, build, propose | Generate something new | Phase 5 |
 
-**Formula**: `[Subject]-[Verb]-[Object/Outcome]`
+### 2.5 Step 5 — Map Dependencies (DAG)
 
-**Examples**:
-- "Functions-encapsulate-reusable-code-blocks"
-- "Promises-handle-asynchronous-operations-in-JavaScript"
-- "Indexes-speed-up-database-query-performance"
-- "Mutex-prevents-concurrent-access-to-shared-resources"
+For each concept, declare:
 
-#### Step 5: Assign Contextual Tags
+| Relation | Description | Format |
+|:---------|:-----------|:-------|
+| **Prerequisites** | What MUST be understood first | `[[concept]]` — max 3 |
+| **Related** | Lateral connections (same level) | `[[concept]]` |
+| **Enables** | What this concept makes possible | Forward dependencies |
 
-Each concept needs 3-5 tags in `#CONTEXT-REFERENCE` format:
+**Integrity rules**:
+- Foundational concepts (Phase 1) MUST have `Prerequisites: None`
+- No circular dependencies allowed (the graph must be a DAG)
+- Every concept (except foundational) must have at least 1 prerequisite
 
-**Tagging Rules**:
-- **Tag 1**: Primary context (e.g., `#HTTP-Protocol`)
-- **Tag 2**: Conceptual category (e.g., `#Architecture-Stateless`)
-- **Tag 3**: Related domain (e.g., `#WebDevelopment-APIs`)
-- **Tag 4-5** (optional): Cross-cutting concerns (e.g., `#Security-Authentication`, `#Performance-Optimization`)
+### 2.6 Step 6 — Create Declarative Titles
 
-## Output Format
+Formula: **`[Subject]-[Verb]-[Object/Outcome]`**
 
-Structure your response as a table with these columns:
+| Quality | Example |
+|:--------|:--------|
+| ✅ Good | `Functions-encapsulate-reusable-code-blocks` |
+| ✅ Good | `Promises-handle-asynchronous-operations-in-JavaScript` |
+| ✅ Good | `Indexes-speed-up-database-query-performance` |
+| ❌ Vague | `Introduction to Functions` |
+| ❌ No verb | `JavaScript Promises` |
+| ❌ Too long | `Functions-are-blocks-of-code-that-can-be-defined-once-and-called-many-times-to-perform-a-specific-task` |
 
-| Sequence | Declarative Note Title | Brief Description | Prerequisites | Tags |
-| :--- | :--- | :--- | :--- | :--- |
-| 1 | [Concept-expresses-complete-idea] | [50-100 word description] | None / [[prerequisite-1]], [[prerequisite-2]] | #Context-Ref1 #Context-Ref2 #Context-Ref3 |
+### 2.7 Step 7 — Assign Contextual Tags
 
-### Column Specifications
+Each concept receives 3–5 tags in `#CONTEXT-REFERENCE` format:
 
-**Sequence**:
-- Number representing learning order
-- Group related concepts together
-- Foundation concepts come first
+| Position | Function | Example |
+|:---------|:---------|:--------|
+| Tag 1 | Primary context (domain) | `#HTTP-Protocol` |
+| Tag 2 | Conceptual category | `#Architecture-Stateless` |
+| Tag 3 | Related domain | `#WebDevelopment-APIs` |
+| Tag 4–5 | Cross-references (optional) | `#Security-Authentication` |
 
-**Declarative Note Title**:
-- Use hyphens instead of spaces
-- Express complete idea in title
-- Follow `Subject-Verb-Object` pattern
-- PascalCase for proper nouns
+---
 
-**Brief Description**:
-- 50-100 words explaining the concept
-- Include WHY this concept matters
-- Mention practical application
-- Should NOT repeat the title verbatim
+## 3. Output Format
 
-**Prerequisites**:
-- List concepts that must be understood first
-- Use `[[wiki-link]]` format for note references
-- Use "None" only for foundational concepts
-- Maximum 3 prerequisites per concept
+### 3.1 Decomposition Table
 
-**Tags**:
-- 3-5 tags in `#CONTEXT-REFERENCE` format
-- Both parts in PascalCase
-- First tag = primary context
-- Additional tags = cross-references
-- Enable graph view clustering
+Structure the output as a table with these columns:
 
-## Quality Criteria
+| Seq | Declarative Title | Description (50–100 words) | Prerequisites | Bloom | Tags |
+|:----|:------------------|:---------------------------|:--------------|:------|:-----|
+| 1 | [Subject-Verb-Object] | [Why it matters + practical application. Do NOT repeat the title.] | None | remember | #Ctx-Ref1 #Ctx-Ref2 #Ctx-Ref3 |
+| 2 | [Subject-Verb-Object] | [Why it matters + practical application.] | [[note-1]] | understand | #Ctx-Ref1 #Ctx-Ref2 |
 
-Before finalizing output, verify each concept meets these criteria:
+### 3.2 Column Specifications
 
-### Atomicity Checklist
+**Sequence**: learning order number. Foundations first, composite concepts later. Concepts from the same domain grouped together.
 
-- [ ] Can be explained in 200-300 words
+**Declarative Title**: hyphens instead of spaces. Expresses complete idea. Follows `Subject-Verb-Object` pattern. PascalCase for proper nouns.
+
+**Description**: 50–100 words. Includes WHY the concept matters and WHERE it applies. Does NOT repeat the title verbatim.
+
+**Prerequisites**: WikiLinks `[[concept]]`. "None" only for foundational concepts (Phase 1). Maximum 3 prerequisites.
+
+**Bloom**: Bloom's Taxonomy level (remember, understand, apply, analyze, evaluate, create). Determines which Phase in the plan the concept is allocated to.
+
+**Tags**: 3–5 tags in `#CONTEXT-REFERENCE` format. PascalCase in both parts.
+
+---
+
+## 4. Quality Criteria
+
+### 4.1 Atomicity Checklist
+
+- [ ] Explainable in 200–300 words
 - [ ] Contains exactly ONE core idea
-- [ ] Has a declarative title
-- [ ] Is independently understandable
+- [ ] Title is a complete statement (Subject-Verb-Object)
+- [ ] Independently understandable
 - [ ] Cannot be meaningfully subdivided
 
-### Connectivity Checklist
+### 4.2 Connectivity Checklist
 
 - [ ] Prerequisites clearly identified
 - [ ] Tags enable cross-referencing
-- [ ] Fits into larger knowledge graph
-- [ ] Enables future concepts
+- [ ] Fits into the larger knowledge graph
+- [ ] Enables future concepts (not a dead end)
 
-### Completeness Checklist
+### 4.3 Completeness Checklist
 
-- [ ] All concepts in subject area covered
-- [ ] No significant gaps in learning path
-- [ ] Dependencies form valid DAG (no circular dependencies)
+- [ ] All aspects of the domain covered
+- [ ] No significant gaps in the learning path
+- [ ] Dependencies form a valid DAG (no cycles)
 - [ ] Progression from basic to advanced is clear
+- [ ] All 6 Bloom levels represented (when applicable)
+- [ ] Balance between theory and practice (ratio ≈ 1:1)
 
-## Example Output
+### 4.4 Cognitive Progression Checklist
 
-### Subject: "Docker Containerization"
+- [ ] Phase 1 contains only concepts with `Prerequisites: None`
+- [ ] Each subsequent phase builds upon the previous
+- [ ] Bloom level increases monotonically across phases
+- [ ] Completion criteria defined for each phase
+- [ ] Creation concepts (Phase 5) integrate multiple domains
 
-| Sequence | Declarative Note Title | Brief Description | Prerequisites | Tags |
-| :--- | :--- | :--- | :--- | :--- |
-| 1 | Processes-isolate-program-execution-in-operating-systems | Operating systems run multiple programs simultaneously by isolating each program's execution context, memory, and resources into separate processes. This isolation prevents programs from interfering with each other and enables resource management. Understanding processes is fundamental to containerization. | None | #OS-Processes #SystemArchitecture-Isolation #ComputerScience-Fundamentals |
-| 2 | Namespaces-provide-process-isolation-in-Linux | Linux namespaces partition kernel resources so that different processes see different views of the system. Each namespace type (PID, network, mount, etc.) isolates a specific aspect, enabling process groups to operate independently on the same host. This is the core isolation mechanism for containers. | [[Processes-isolate-program-execution-in-operating-systems]] | #Linux-Namespaces #OS-Isolation #Docker-Foundation |
-| 3 | Cgroups-limit-and-account-resource-usage | Control Groups (cgroups) in Linux restrict how much CPU, memory, disk I/O, and network bandwidth a process group can use. This prevents any single container from consuming all host resources and enables fair resource allocation across multiple containers. | [[Processes-isolate-program-execution-in-operating-systems]] | #Linux-Cgroups #ResourceManagement-Limits #Docker-Foundation |
-| 4 | Container-images-package-application-dependencies | A container image is a read-only template containing the application code, runtime, libraries, and dependencies needed to run an application. Images ensure consistency across environments by bundling all requirements into a single portable artifact. | None | #Docker-Images #DependencyManagement-Packaging #DevOps-Portability |
-| 5 | Docker-combines-namespaces-and-cgroups-for-containerization | Docker uses Linux namespaces for process isolation and cgroups for resource management to create lightweight containers. Each container runs as an isolated process on the host, sharing the kernel but having its own filesystem, network, and process tree. This provides near-native performance with strong isolation. | [[Namespaces-provide-process-isolation-in-Linux]], [[Cgroups-limit-and-account-resource-usage]], [[Container-images-package-application-dependencies]] | #Docker-Architecture #Containerization-Fundamentals #Linux-ContainerRuntime |
-| 6 | Docker-layers-enable-efficient-image-storage | Docker images use a layered filesystem where each instruction in a Dockerfile creates a new read-only layer. Layers are shared across images, reducing storage and speeding up builds. Only changed layers need to be rebuilt or transferred, optimizing the development workflow. | [[Container-images-package-application-dependencies]] | #Docker-Images #Storage-Optimization #FileSystem-Layers |
+---
 
-## Advanced Guidelines
+## 5. Complete Example: "Docker Containerization"
 
-### Handling Complex Subjects
+### 5.1 First Principles Identified
 
-For large subjects (e.g., "Machine Learning", "Cloud Computing"):
+1. Processes isolate program execution in operating systems
+2. Filesystems organize data in hierarchical structures
+3. Networks enable communication between processes on different machines
 
-1. **Create sub-contexts**: Break into 5-8 sub-domains
-2. **20-50 concepts per sub-context**: Keep each context manageable
-3. **Cross-reference between contexts**: Use tags to link related ideas
-4. **Foundation-first ordering**: Start with mathematical/theoretical foundations
+### 5.2 Conceptual Domains
 
-### Handling Interdisciplinary Subjects
+| Domain | Predominant Bloom Phase |
+|:-------|:------------------------|
+| OS Fundamentals (processes, isolation) | Remember, Understand |
+| Linux Mechanisms (namespaces, cgroups) | Understand, Apply |
+| Docker Images and Containers | Apply, Analyze |
+| Docker Networking and Volumes | Apply, Analyze |
+| Orchestration and Best Practices | Evaluate, Create |
 
-When concepts span multiple domains:
+### 5.3 Decomposition Table
 
-1. **Multiple tag contexts**: Use 4-5 tags instead of 3
-2. **Explicit cross-references**: Link to concepts in other contexts
-3. **Context boundaries**: Clearly indicate when entering new domain
-4. **Bridge concepts**: Create notes that explicitly connect domains
+| Seq | Declarative Title | Description | Prerequisites | Bloom | Tags |
+|:----|:------------------|:----------|:--------------|:------|:-----|
+| 1 | Processes-isolate-program-execution-in-operating-systems | Operating systems run multiple programs simultaneously by isolating each program's execution context, memory, and resources into separate processes. This isolation prevents mutual interference and is the conceptual foundation of containerization. | None | remember | #OS-Processes #SystemArchitecture-Isolation #ComputerScience-Fundamentals |
+| 2 | Namespaces-provide-process-isolation-in-Linux | Linux namespaces partition kernel resources so that different processes see different views of the system. Each namespace type (PID, network, mount) isolates a specific aspect, enabling process groups to operate independently on the same host. | [[Processes-isolate-program-execution-in-operating-systems]] | understand | #Linux-Namespaces #OS-Isolation #Docker-Foundation |
+| 3 | Cgroups-limit-and-account-resource-usage | Control Groups (cgroups) in Linux restrict how much CPU, memory, and I/O a process group can use. They prevent any single container from consuming all host resources and enable fair allocation across multiple containers. | [[Processes-isolate-program-execution-in-operating-systems]] | understand | #Linux-Cgroups #ResourceManagement-Limits #Docker-Foundation |
+| 4 | Container-images-package-application-dependencies | A container image is a read-only template containing the application code, runtime, libraries, and dependencies needed to run an application. Images ensure consistency across environments by bundling all requirements into a single portable artifact. | None | understand | #Docker-Images #DependencyManagement-Packaging #DevOps-Portability |
+| 5 | Docker-combines-namespaces-and-cgroups-for-containerization | Docker uses Linux namespaces for process isolation and cgroups for resource management to create lightweight containers. Each container runs as an isolated process on the host, sharing the kernel but having its own filesystem, network, and process tree. | [[Namespaces-provide-process-isolation-in-Linux]], [[Cgroups-limit-and-account-resource-usage]], [[Container-images-package-application-dependencies]] | apply | #Docker-Architecture #Containerization-Fundamentals #Linux-ContainerRuntime |
+| 6 | Docker-layers-enable-efficient-image-storage | Docker images use a layered filesystem where each Dockerfile instruction creates a new read-only layer. Layers are shared across images, reducing storage and speeding up builds. Only changed layers need to be rebuilt or transferred. | [[Container-images-package-application-dependencies]] | apply | #Docker-Images #Storage-Optimization #FileSystem-Layers |
 
-### Handling Practical vs Theoretical
+---
 
-Balance theory and practice:
+## 6. Guidelines for Complex Subjects
 
-1. **Theory notes**: Focus on principles, laws, and abstract models
-2. **Application notes**: Show practical implementation and use cases
-3. **1:1 ratio**: Every theoretical concept should have practical counterpart
-4. **Link both directions**: Theory → Practice and Practice → Theory
+### 6.1 Broad Subjects (e.g., "Machine Learning", "Cloud Computing")
 
-## Common Mistakes to Avoid
+1. Create **sub-contexts**: divide into 5–8 sub-domains
+2. **20–50 concepts per sub-context**: keep each context manageable
+3. **Cross-reference**: use tags to connect concepts across contexts
+4. **Foundations-first ordering**: start with mathematical/theoretical bases
 
-❌ **Vague titles**: "Introduction to X", "Understanding Y"
-✅ **Declarative**: "X-enables-Y-through-Z"
+### 6.2 Interdisciplinary Subjects
 
-❌ **Multiple ideas**: "HTTP methods and status codes"
-✅ **Atomic**: Separate notes for methods and status codes
+1. **Multiple tag contexts**: use 4–5 tags instead of 3
+2. **Explicit cross-references**: link to concepts in other contexts
+3. **Context boundaries**: clearly indicate when entering a new domain
+4. **Bridge concepts**: create notes that explicitly connect domains
 
-❌ **Missing prerequisites**: Advanced concept with no foundation
-✅ **Clear path**: Every concept builds on previous ones
+### 6.3 Theory vs. Practice Balance
 
-❌ **Generic tags**: `#programming`, `#databases`
-✅ **Specific**: `#SQL-QueryOptimization`, `#Databases-Indexing`
+1. **Theory notes**: focus on principles, laws, abstract models
+2. **Application notes**: implementations, use cases, real-world scenarios
+3. **Ratio ≈ 1:1**: every theoretical concept should have a practical counterpart
+4. **Bidirectional links**: Theory → Practice and Practice → Theory
 
-❌ **Circular dependencies**: A requires B, B requires A
-✅ **DAG structure**: Clear directed acyclic graph
+---
 
-❌ **Too granular**: "GET-method-retrieves-resources"
-✅ **Appropriate scope**: "HTTP-methods-define-request-semantics" (covers all methods)
+## 7. Iterative Refinement
 
-❌ **Too broad**: "Object-Oriented Programming"
-✅ **Atomic concepts**: Separate notes for encapsulation, inheritance, polymorphism
+After generating the initial decomposition, validate:
 
-## Iterative Refinement
-
-After generating initial decomposition:
-
-1. **Check coverage**: Are all aspects of the subject included?
-2. **Verify atomicity**: Can any concept be split further?
-3. **Test prerequisites**: Does the learning path make sense?
-4. **Balance granularity**: Not too fine, not too coarse
-5. **Cross-reference check**: Do tags enable graph view navigation?
+1. **Coverage**: are all aspects of the subject included?
+2. **Atomicity**: can any concept be further subdivided?
+3. **Prerequisites**: does the learning path make sense?
+4. **Granularity**: not too fine, not too coarse?
+5. **Bloom progression**: do levels increase appropriately across phases?
+6. **Cross-referencing**: do tags enable graph navigation?
+7. **Valid DAG**: are there any circular dependencies?

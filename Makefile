@@ -4,6 +4,7 @@
 VAULT_NAME ?= my-study-vault
 TOPIC ?= "Your Study Topic"
 CONTEXT ?= 
+LANGUAGE ?= en
 OUTPUT_DIR ?= ./generated-vaults
 
 # Colors
@@ -27,12 +28,14 @@ help: ## Show this help message
 	@echo ""
 	@echo "$(GREEN)Usage examples:$(NC)"
 	@echo "  make generate TOPIC=\"Kubernetes\"          # Generate complete vault with AI"
+	@echo "  make generate TOPIC=\"Kubernetes\" LANGUAGE=pt  # Generate in Portuguese"
 	@echo "  make prompt-only TOPIC=\"GraphQL APIs\"     # Print prompt to terminal only"
 	@echo "  make validate VAULT_NAME=my-vault         # Validate existing vault"
 	@echo ""
 	@echo "$(GREEN)Configuration variables:$(NC)"
 	@echo "  TOPIC        Study topic (required for generate/prompt-only)"
 	@echo "  CONTEXT      Context name (optional, auto-generated from TOPIC)"
+	@echo "  LANGUAGE     Output language code (default: en) (e.g., pt, es, fr, de)"
 	@echo "  OUTPUT_DIR   Output directory (default: ./generated-vaults)"
 	@echo "  VAULT_NAME   Vault name for validation (default: my-study-vault)"
 	@echo ""
@@ -51,9 +54,9 @@ generate: setup ## Generate complete vault with AI content (requires TOPIC)
 	fi
 	@echo "$(BLUE)Generating vault for topic: $(TOPIC)$(NC)"
 	@if [ -n "$(CONTEXT)" ]; then \
-		./scripts/generate-vault.sh --topic "$(TOPIC)" --context "$(CONTEXT)" --output $(OUTPUT_DIR); \
+		./scripts/generate-vault.sh --topic "$(TOPIC)" --context "$(CONTEXT)" --lang "$(LANGUAGE)" --output $(OUTPUT_DIR); \
 	else \
-		./scripts/generate-vault.sh --topic "$(TOPIC)" --output $(OUTPUT_DIR); \
+		./scripts/generate-vault.sh --topic "$(TOPIC)" --lang "$(LANGUAGE)" --output $(OUTPUT_DIR); \
 	fi
 
 prompt-only: setup ## Print optimized prompt to terminal only (requires TOPIC)
@@ -64,9 +67,9 @@ prompt-only: setup ## Print optimized prompt to terminal only (requires TOPIC)
 	fi
 	@echo "$(BLUE)Generating optimized prompt for: $(TOPIC)$(NC)"
 	@if [ -n "$(CONTEXT)" ]; then \
-		./scripts/generate-vault.sh --topic "$(TOPIC)" --context "$(CONTEXT)" --prompt-only; \
+		./scripts/generate-vault.sh --topic "$(TOPIC)" --context "$(CONTEXT)" --lang "$(LANGUAGE)" --prompt-only; \
 	else \
-		./scripts/generate-vault.sh --topic "$(TOPIC)" --prompt-only; \
+		./scripts/generate-vault.sh --topic "$(TOPIC)" --lang "$(LANGUAGE)" --prompt-only; \
 	fi
 
 validate: ## Validate generated vault (requires VAULT_NAME)
@@ -102,13 +105,13 @@ test-prompt: ## Test prompt optimization with example topic
 	@./scripts/generate-vault.sh --topic "Docker Containerization" --prompt-only
 
 example-k8s: setup ## Generate example Kubernetes study vault
-	@$(MAKE) generate TOPIC="Kubernetes" CONTEXT="Kubernetes"
+	@$(MAKE) generate TOPIC="Kubernetes" CONTEXT="Kubernetes" LANGUAGE="$(LANGUAGE)"
 
 example-ml: setup ## Generate example Machine Learning study vault
-	@$(MAKE) generate TOPIC="Machine Learning" CONTEXT="MachineLearning"
+	@$(MAKE) generate TOPIC="Machine Learning" CONTEXT="MachineLearning" LANGUAGE="$(LANGUAGE)"
 
 example-graphql: setup ## Generate example GraphQL APIs study vault
-	@$(MAKE) generate TOPIC="GraphQL APIs" CONTEXT="GraphQL"
+	@$(MAKE) generate TOPIC="GraphQL APIs" CONTEXT="GraphQL" LANGUAGE="$(LANGUAGE)"
 
 stats: ## Show statistics about generated vaults
 	@echo "$(BLUE)Vault Statistics:$(NC)"

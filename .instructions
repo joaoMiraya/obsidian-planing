@@ -1,231 +1,127 @@
-# Obsidian Vault Instructions for Study Plan Generation
+# Obsidian Vault — Study Plan Generation Instructions
 
-## Purpose
+> **Audience**: AI models (GitHub Copilot, ChatGPT, Claude).
+> **Goal**: Generate complete, functional Obsidian vaults based on the Zettelkasten method, with atomic notes, navigable knowledge graphs, and study plans structured by cognitive progression.
 
-These instructions guide AI models to generate complete, methodologically sound Obsidian vaults for study plans based on the Zettelkasten method. The output must be a fully functional vault with proper configuration, atomic notes, and navigable knowledge graphs.
+---
 
-## Vault Configuration Requirements
+## 1. Vault Architecture
 
-### Required Files Structure
-
-Every generated vault MUST include:
-
-1. **Configuration Directory**: `.obsidian/` with all settings
-2. **Content Structure**: Folders `00-INDEX/`, `10-CONTEXTS/`, `20-STUDY-PLANS/`, `30-MAPS/`, `40-RESOURCES/`
-3. **Templates**: Note templates in `40-RESOURCES/templates/`
-4. **Initial Index**: `00-INDEX/Master-Index.md` and `00-INDEX/Context-Map.md`
-
-### Obsidian Configuration Files
-
-The `.obsidian/` directory structure is provided in this repository. When generating a vault:
-
-1. **Copy entire `.obsidian/` directory** to the vault root
-2. **Verify these critical settings**:
-   - `app.json`: Links auto-update enabled, attachments in `40-RESOURCES/attachments`
-   - `graph.json`: Color groups configured for contexts and note types
-   - `templates.json`: Template folder set to `40-RESOURCES/templates`
-   - `appearance.json`: CSS snippet `zettelkasten-styling` enabled
-
-3. **Recommended plugins** (listed in `community-plugins.json`):
-   - **Dataview**: Query and list notes dynamically
-   - **Templater**: Advanced template functionality
-   - **Mind Map**: Visual concept mapping
-   - **Excalidraw**: Diagrams and sketches
-   - **Breadcrumbs**: Hierarchy visualization
-   - **Journey**: Zettelkasten path navigation
-   - **Kanban**: Study progress tracking
-   - **Link View**: Backlinks visualization
-
-### Graph View Configuration
-
-The vault is pre-configured with color-coded groups:
-
-- **Red**: `00-INDEX/` files (Master Index, Context Map)
-- **Green**: Permanent notes in `10-CONTEXTS/*/permanent-notes/`
-- **Blue**: Literature notes in `10-CONTEXTS/*/literature-notes/`
-- **Purple**: Fleeting notes in `10-CONTEXTS/*/fleeting-notes/`
-- **Orange**: Study plans tagged with `#StudyPlan`
-
-## Vault Folder Structure
+### 1.1 Directory Structure
 
 ```
 vault-root/
+├── .obsidian/                    # Obsidian configuration (copy from repository)
 ├── 00-INDEX/
-│   ├── Master-Index.md
-│   └── Context-Map.md
+│   ├── Master-Index.md           # Registry of all contexts
+│   └── Context-Map.md            # Inter-context dependency graph (Mermaid)
 ├── 10-CONTEXTS/
-│   ├── [Context-Name-1]/
-│   │   ├── permanent-notes/
-│   │   ├── literature-notes/
-│   │   └── fleeting-notes/
-│   ├── [Context-Name-2]/
-│   │   ├── permanent-notes/
-│   │   ├── literature-notes/
-│   │   └── fleeting-notes/
+│   └── [ContextName]/            # PascalCase, no spaces
+│       ├── permanent-notes/      # Atomic notes (200–300 words)
+│       ├── literature-notes/     # Source summaries
+│       └── fleeting-notes/       # Quick captures
 ├── 20-STUDY-PLANS/
-│   ├── [Context-Name]-Study-Plan.md
+│   └── [ContextName]-Study-Plan.md
 ├── 30-MAPS/
-│   ├── concept-maps/
-│   └── dependency-graphs/
+│   ├── concept-maps/             # Mermaid diagrams
+│   └── dependency-graphs/        # Learning path graphs
 └── 40-RESOURCES/
-    ├── references/
-    └── templates/
+    ├── templates/                # Note templates
+    ├── references/               # External references
+    └── attachments/              # Images, PDFs
 ```
 
-## Naming Conventions
+### 1.2 Obsidian Configuration
 
-### File Names
+The `.obsidian/` directory from this repository MUST be copied in full to the vault root. Verify after copying:
 
-- **Permanent Notes**: `Declarative-Title.md`
-- **Literature Notes**: `LIT-Source-Title.md`
-- **Fleeting Notes**: `FLEET-Brief-Title.md`
-- **Study Plans**: `[Context-Name]-Study-Plan.md`
-- **Context Folders**: `[Context-Name]` (PascalCase, no spaces)
-- **Index Files**: `Master-Index.md`, `Context-Map.md`
+| File | Critical Setting |
+|:-----|:-----------------|
+| `app.json` | `alwaysUpdateLinks: true`, attachments in `40-RESOURCES/attachments` |
+| `graph.json` | Color groups by note type (see §1.3) |
+| `templates.json` | Template folder: `40-RESOURCES/templates` |
+| `appearance.json` | CSS snippet `zettelkasten-styling` enabled |
 
-### Note Titles
+**Recommended plugins** (`community-plugins.json`):
+Dataview · Templater · Mind Map · Excalidraw · Breadcrumbs · Journey · Kanban · Link View
 
-- Must be declarative statements
-- Express a complete idea
-- Example: "HTTP-methods-define-request-semantics" not "HTTP Methods"
+### 1.3 Graph View — Color Scheme
 
-## Tagging Standards
+| Color | Scope | Selection Criteria |
+|:------|:------|:-------------------|
+| 🔴 Red | Indexes | Files in `00-INDEX/` |
+| 🟢 Green | Permanent notes | Files in `*/permanent-notes/` |
+| 🔵 Blue | Literature notes | Files in `*/literature-notes/` |
+| 🟣 Purple | Fleeting notes | Files in `*/fleeting-notes/` |
+| 🟠 Orange | Study plans | Tag `#StudyPlan` |
 
-### Format
+---
 
-All tags must follow: `#CONTEXT-REFERENCE`
+## 2. Mandatory Conventions
 
-### Rules
+### 2.1 File Naming
 
-- Use PascalCase for both Context and Reference
-- Context represents the domain or area of study
-- Reference represents the specific concept or topic
-- Multiple tags per note are mandatory for cross-referencing
+| Type | Pattern | Example |
+|:-----|:--------|:--------|
+| Permanent note | `Declarative-Title.md` | `HTTP-methods-define-request-semantics.md` |
+| Literature note | `LIT-Source-Title.md` | `LIT-Fielding-REST-Dissertation.md` |
+| Fleeting note | `FLEET-Brief-Title.md` | `FLEET-API-design-thoughts.md` |
+| Study plan | `[ContextName]-Study-Plan.md` | `RestAPIs-Study-Plan.md` |
+| Context folders | PascalCase, no spaces | `MachineLearning`, `WebSecurity` |
 
-### Examples
+### 2.2 Declarative Titles
 
-```markdown
-#AWS-EventDriven
-#Architecture-Microservices
-#Python-AsyncIO
-#DataStructures-BinaryTrees
-#Security-OAuth2
-#Frontend-ReactHooks
+Titles MUST be complete statements in **Subject-Verb-Object** format:
+
+- ✅ `HTTP-methods-define-request-semantics`
+- ✅ `Encapsulation-hides-internal-object-state-from-external-access`
+- ❌ `HTTP Methods` (vague, not declarative)
+- ❌ `Introduction to APIs` (generic)
+
+### 2.3 Tags — `#CONTEXT-REFERENCE` Format
+
+- PascalCase in both components
+- Minimum 3, maximum 7 tags per permanent note
+- Tag 1: primary context · Tag 2: conceptual category · Tag 3+: cross-references
+
+```
+#AWS-EventDriven  #Architecture-Microservices  #Python-AsyncIO
+#DataStructures-BinaryTrees  #Security-OAuth2  #Frontend-ReactHooks
 ```
 
-### Tag Application
+### 2.4 Internal Links
 
-- Minimum 3 tags per permanent note
-- Tags must connect to other contexts when applicable
-- Tags must support Graph View navigation
+- Exclusive format: WikiLinks `[[Note-Title]]`
+- Never use markdown links `[text](link)`
+- Prerequisites: declared at the beginning of the note
+- Related concepts: declared at the end of the note
+- Embedded diagrams: `![[diagram-name]]`
 
-## Linking Standards
+### 2.5 Diagrams — Mermaid Only
 
-### Internal Links
+| Purpose | Mermaid Type |
+|:--------|:-------------|
+| Concept dependencies | `flowchart` |
+| Study plan sequence | `flowchart` or `timeline` |
+| Knowledge graphs | `graph` |
+| Mind maps | `mindmap` |
+| Class relationships | `classDiagram` |
 
-- Use WikiLinks format: `[[Note-Title]]`
-- Link to prerequisite concepts at note beginning
-- Link to related concepts at note end
-- Embed diagrams using: `![[diagram-name]]`
+---
 
-### Link Structure in Permanent Notes
+## 3. Permanent Notes — Zettelkasten Specification
 
-```markdown
-# Note Title
+### 3.1 Atomicity Criteria
 
-**Prerequisites**: [[prerequisite-note-1]] [[prerequisite-note-2]]
+Each permanent note MUST:
 
-[Note content]
+1. **Contain exactly ONE idea** — indivisible into meaningful sub-concepts
+2. **Be self-contained** — understandable without requiring other notes
+3. **Have a declarative title** — expresses the complete idea in Subject-Verb-Object format
+4. **Be 200–300 words** — concise and dense
+5. **Be testable** — the concept can be verified, demonstrated, or applied
 
-**Related**: [[related-note-1]] [[related-note-2]]
-**Tags**: #Context-Reference #Context-Reference #Context-Reference
-```
-
-## Diagram Standards
-
-### Syntax
-
-All diagrams must use Mermaid syntax exclusively.
-
-### Diagram Types by Purpose
-
-- **Concept Dependencies**: flowchart
-- **Study Plan Sequences**: flowchart or timeline
-- **Knowledge Graphs**: graph
-- **Mind Maps**: mindmap
-- **Class Relationships**: classDiagram
-
-### Example: Study Plan Sequence
-
-```mermaid
-flowchart TD
-    A[HTTP-methods-define-request-semantics] --> B[REST-constraints-define-architectural-style]
-    A --> C[HTTP-status-codes-communicate-response-state]
-    B --> D[REST-APIs-use-HTTP-methods-for-CRUD]
-    C --> D
-    D --> E[API-versioning-maintains-backward-compatibility]
-    
-    style A fill:#e1f5ff
-    style B fill:#e1f5ff
-    style C fill:#e1f5ff
-    style D fill:#fff4e1
-    style E fill:#ffe1e1
-```
-
-### Example: Context Dependency Graph
-
-```mermaid
-graph LR
-    A[#Backend-APIs] --> B[#Architecture-Microservices]
-    A --> C[#Security-Authentication]
-    B --> D[#Infrastructure-Containers]
-    C --> E[#Security-OAuth2]
-    D --> F[#DevOps-Orchestration]
-```
-
-## Zettelkasten Compliance
-
-### Atomic Concept Decomposition
-
-Each permanent note must:
-- Address exactly one atomic concept
-- Be explainable in 200-300 words
-- Have a declarative title expressing the complete idea
-- Stand alone without requiring other notes to be understood
-
-### Note Structure Template
-
-```markdown
-# [Declarative-Note-Title]
-
-**Prerequisites**: [[prerequisite-1]] [[prerequisite-2]]
-
-## Concept
-
-[200-300 word explanation of the atomic concept]
-
-## Example
-
-[Concrete example demonstrating the concept]
-
-## Related
-
-[[related-concept-1]]
-[[related-concept-2]]
-
-**Tags**: #Context-Reference #Context-Reference #Context-Reference
-```
-
-### Dependency Mapping
-
-Every permanent note must declare:
-- Prerequisite concepts (what must be understood first)
-- Related concepts (what connects laterally)
-- Context tags (where this fits in the knowledge graph)
-
-## Templates
-
-### Permanent Note Template
+### 3.2 Permanent Note Template
 
 Location: `40-RESOURCES/templates/permanent-note-template.md`
 
@@ -236,12 +132,13 @@ modified: {{date:YYYY-MM-DD}}
 type: permanent
 context: {{context}}
 sequence: 0
+bloom_level: remember | understand | apply | analyze | evaluate | create
 tags: []
 ---
 
 # {{title}}
 
-**Prerequisites**: 
+**Prerequisites**: [[prerequisite-1]] [[prerequisite-2]]
 
 **Status**: 🟡 In Progress
 
@@ -249,7 +146,7 @@ tags: []
 
 ## Concept
 
-[200-300 word explanation of ONE atomic concept]
+[200–300 word explanation of ONE atomic concept]
 
 ## Example
 
@@ -257,7 +154,7 @@ tags: []
 
 ## Application
 
-[When/where this concept is used]
+[When/where this concept is used in real-world scenarios]
 
 ## Related Concepts
 
@@ -268,10 +165,10 @@ tags: []
 ---
 
 **Tags**: #Context-Reference #Context-Reference #Context-Reference
-**Source**: 
+**Source**:
 ```
 
-### Literature Note Template
+### 3.3 Literature Note Template
 
 Location: `40-RESOURCES/templates/literature-note-template.md`
 
@@ -307,7 +204,6 @@ tags: []
 
 - [ ] [[concept-1]] - [brief description]
 - [ ] [[concept-2]] - [brief description]
-- [ ] [[concept-3]] - [brief description]
 
 ## Permanent Notes Created
 
@@ -319,7 +215,51 @@ tags: []
 **Tags**: #Literature-{{context}}
 ```
 
-### Study Plan Template
+### 3.4 Dependency Mapping
+
+Every permanent note MUST declare:
+
+- **Prerequisites**: concepts that MUST be understood first (WikiLinks)
+- **Related**: concepts that connect laterally
+- **Context tags**: position within the knowledge graph
+
+Dependencies MUST form a **DAG** (directed acyclic graph) — no circular dependencies allowed.
+
+### 3.5 Breadcrumbs Navigation (optional)
+
+```yaml
+---
+up: [[parent-concept]]
+same: [[related-concept-1]], [[related-concept-2]]
+down: [[sub-concept-1]], [[sub-concept-2]]
+---
+```
+
+---
+
+## 4. Study Plan — Structure and Cognitive Progression
+
+### 4.1 Pedagogical Foundation
+
+The study plan follows three structuring principles:
+
+1. **Revised Bloom's Taxonomy**: organizes concepts by ascending cognitive level (Remember → Understand → Apply → Analyze → Evaluate → Create)
+2. **First Principles Thinking**: begins with axioms and fundamental building blocks before deriving composite concepts
+3. **Concept Maps (Novak)**: makes relationships between concepts explicit, forming a navigable semantic network
+
+### 4.2 Progression Phases
+
+The plan is NOT a list of topics. It is a **structured cognitive progression** in 5 layers:
+
+| Phase | Bloom Level | Objective | Description |
+|:------|:------------|:----------|:------------|
+| **1 — Foundations** | Remember, Understand | Build the conceptual base | Axioms, definitions, primary principles. Concepts with no dependencies within the domain. |
+| **2 — Structural Concepts** | Understand, Apply | Build relationships | Concepts that connect foundations, recurring patterns, internal mechanisms. |
+| **3 — Application** | Apply, Analyze | Transfer to practical contexts | Use cases, implementations, trade-offs, comparison between approaches. |
+| **4 — Analysis & Integration** | Analyze, Evaluate | Synthesize and critique | Cross-domain integration, alternative evaluation, anti-patterns, architectural decisions. |
+| **5 — Creation & Extension** | Evaluate, Create | Generate new knowledge | Original projects, contributions, domain extensions, research. |
+
+### 4.3 Study Plan Template
 
 Location: `40-RESOURCES/templates/study-plan-template.md`
 
@@ -338,70 +278,108 @@ tags: [StudyPlan]
 
 **Domain**: {{domain}}
 **Goal**: {{goal}}
-**Duration**: {{duration}}
 **Prerequisites**: {{prerequisites}}
 
 ---
 
-## Learning Path
+## Concept Map
 
 ```mermaid
 flowchart TD
-    A[Foundation] --> B[Core Concepts]
-    B --> C[Advanced Topics]
-    C --> D[Practical Application]
+    subgraph Phase1[Phase 1: Foundations]
+        A1[concept-1] --> A2[concept-2]
+    end
+    subgraph Phase2[Phase 2: Structural Concepts]
+        B1[concept-3] --> B2[concept-4]
+    end
+    subgraph Phase3[Phase 3: Application]
+        C1[concept-5]
+    end
+
+    A2 --> B1
+    B2 --> C1
+
+    style A1 fill:#e1f5ff
+    style A2 fill:#e1f5ff
+    style B1 fill:#fff4e1
+    style B2 fill:#fff4e1
+    style C1 fill:#ffe1e1
 ```
 
-## Study Phases
+## Phase 1 — Foundations (Bloom: Remember, Understand)
 
-### Phase 1: Foundation (Estimated: X hours)
+**Objective**: Establish the axioms and base definitions of the domain.
+
+**Completion criteria**:
+- Explain each concept in your own words
+- Identify prerequisites and dependencies between them
 
 **Concepts**:
 - [ ] [[concept-1]]
 - [ ] [[concept-2]]
 - [ ] [[concept-3]]
 
-**Completion Criteria**: 
-- Understand all foundation concepts
-- Complete 3 practical examples
+## Phase 2 — Structural Concepts (Bloom: Understand, Apply)
 
-### Phase 2: Core Concepts (Estimated: X hours)
+**Objective**: Connect foundations into patterns and mechanisms.
+
+**Completion criteria**:
+- Relate concepts in this phase to the foundations
+- Demonstrate mechanisms with examples
 
 **Concepts**:
 - [ ] [[concept-4]]
 - [ ] [[concept-5]]
-- [ ] [[concept-6]]
 
-**Completion Criteria**: 
-- Link all concepts to prerequisites
-- Create 2 integration projects
+## Phase 3 — Application (Bloom: Apply, Analyze)
 
-### Phase 3: Advanced Topics (Estimated: X hours)
+**Objective**: Transfer knowledge to real-world scenarios.
+
+**Completion criteria**:
+- Implement at least 2 practical examples
+- Compare alternative approaches
 
 **Concepts**:
+- [ ] [[concept-6]]
 - [ ] [[concept-7]]
+
+## Phase 4 — Analysis & Integration (Bloom: Analyze, Evaluate)
+
+**Objective**: Synthesize knowledge across domains, evaluate trade-offs.
+
+**Completion criteria**:
+- Evaluate trade-offs between alternatives
+- Identify anti-patterns
+
+**Concepts**:
 - [ ] [[concept-8]]
 - [ ] [[concept-9]]
 
-**Completion Criteria**: 
-- Master advanced patterns
+## Phase 5 — Creation & Extension (Bloom: Evaluate, Create)
+
+**Objective**: Generate original artifacts, contribute to the domain.
+
+**Completion criteria**:
 - Build 1 complete project
+- Document decisions and lessons learned
+
+**Concepts**:
+- [ ] [[concept-10]]
 
 ---
 
 ## Progress Tracking
 
 ```dataview
-TABLE status, tags
+TABLE status as Status, bloom_level as "Bloom Level", tags as Tags
 FROM "10-CONTEXTS/{{context}}/permanent-notes"
-SORT file.name ASC
+SORT sequence ASC
 ```
 
 ## Resources
 
 - [[literature-note-1]]
 - [[literature-note-2]]
-- [[external-resource-1]]
 
 ---
 
@@ -410,251 +388,203 @@ SORT file.name ASC
 **Master Index**: [[Master-Index]]
 ```
 
-## Study Plan Generation Rules
+### 4.4 Dataview Queries for Study Plans
 
-### Step 1: Vault Initialization
-
-1. **Create vault directory structure**:
-   ```
-   vault-root/
-   ├── .obsidian/          # Copy from repository
-   ├── 00-INDEX/
-   ├── 10-CONTEXTS/
-   ├── 20-STUDY-PLANS/
-   ├── 30-MAPS/
-   └── 40-RESOURCES/
-       ├── templates/      # Copy templates
-       ├── references/
-       └── attachments/
-   ```
-
-2. **Initialize Master Index**: Create `00-INDEX/Master-Index.md`
-   ```markdown
-   # Master Index
-   
-   ## Active Study Contexts
-   
-   [Will be populated as contexts are created]
-   
-   ## Statistics
-   
-   ```dataview
-   TABLE length(rows) as "Note Count"
-   FROM "10-CONTEXTS"
-   GROUP BY type
-   ```
-   ```
-
-3. **Initialize Context Map**: Create `00-INDEX/Context-Map.md`
-   ```markdown
-   # Context Dependency Map
-   
-   ## All Contexts
-   
-   ```mermaid
-   graph LR
-       A[Contexts] --> B[Will be populated]
-   ```
-   ```
-
-### Step 2: Context Definition
-
-Define the subject area and create context folder in `10-CONTEXTS/[Context-Name]/`
-
-### Step 3: Atomic Decomposition
-
-Generate table following `.zettelkasten` specifications:
-
-| Sequence | Declarative Note Title | Brief Description | Prerequisites | Tags |
-|:---------|:-----------------------|:------------------|:--------------|:-----|
-| 1 | [Declarative-Title-1] | [Description] | None | #Context-Ref1 #Context-Ref2 #Context-Ref3 |
-| 2 | [Declarative-Title-2] | [Description] | Note-1 | #Context-Ref1 #Context-Ref2 #Context-Ref3 |
-
-### Step 4: Dependency Graph Creation
-
-Create Mermaid flowchart showing learning path with prerequisites.
-
-### Step 5: Permanent Note Generation
-
-For each atomic concept:
-- Create file: `Declarative-Title.md`
-- Place in: `10-CONTEXTS/[Context-Name]/permanent-notes/`
-- Apply template from "Note Structure Template"
-- Include prerequisite links
-- Include 3+ tags
-
-### Step 6: Study Plan Document
-
-Create: `20-STUDY-PLANS/[Context-Name]-Study-Plan.md`
-
-Structure:
-```markdown
-# [Context-Name] Study Plan
-
-## Overview
-
-[Brief description of the study domain]
-
-## Learning Path
-
-![[context-dependency-diagram]]
-
-## Atomic Concepts
-
-### Phase 1: Foundation
-- [[concept-1]]
-- [[concept-2]]
-
-### Phase 2: Core
-- [[concept-3]]
-- [[concept-4]]
-
-### Phase 3: Advanced
-- [[concept-5]]
-- [[concept-6]]
-
-## Tags
-
-#StudyPlan-[ContextName]
+**Progress by status**:
+```dataview
+TABLE status as Status, tags as Tags
+FROM "10-CONTEXTS/{{context}}/permanent-notes"
+WHERE status != null
+SORT status DESC
 ```
 
-### Step 7: Index Update
+**Progress by Bloom level**:
+```dataview
+TABLE bloom_level as "Bloom Level", length(file.outlinks) as "Connections"
+FROM "10-CONTEXTS/{{context}}/permanent-notes"
+GROUP BY bloom_level
+```
 
-Add context entry to `00-INDEX/Master-Index.md`:
+**Tag coverage**:
+```dataview
+TABLE length(tags) as "Tag Count", tags
+FROM "10-CONTEXTS/{{context}}/permanent-notes"
+SORT length(tags) DESC
+```
 
+---
+
+## 5. Vault Generation Process
+
+### 5.1 Step 1 — Initialization
+
+1. Create directory structure per §1.1
+2. Copy `.obsidian/` from the repository
+3. Create `00-INDEX/Master-Index.md` and `00-INDEX/Context-Map.md` (empty, with placeholders)
+
+### 5.2 Step 2 — Context Definition
+
+- Define context name in PascalCase (e.g., `MachineLearning`, `WebSecurity`)
+- Create folder at `10-CONTEXTS/[ContextName]/` with subfolders `permanent-notes/`, `literature-notes/`, `fleeting-notes/`
+
+### 5.3 Step 3 — Atomic Decomposition
+
+Follow the methodology defined in `.zettelkasten` to decompose the subject into atomic concepts. Generate table:
+
+| Seq | Declarative Title | Description (50–100 words) | Prerequisites | Bloom Level | Tags |
+|:----|:------------------|:---------------------------|:--------------|:------------|:-----|
+| 1 | [Subject-Verb-Object] | [Why it matters + application] | None | understand | #Ctx-Ref1 #Ctx-Ref2 |
+| 2 | [Subject-Verb-Object] | [Why it matters + application] | [[note-1]] | apply | #Ctx-Ref1 #Ctx-Ref2 |
+
+### 5.4 Step 4 — Dependency Graph
+
+Create Mermaid `flowchart TD` diagram showing the learning path with prerequisites. Use colors per phase:
+- Foundations: `fill:#e1f5ff`
+- Structural Concepts: `fill:#d4edda`
+- Application: `fill:#fff4e1`
+- Analysis & Integration: `fill:#f8d7da`
+- Creation: `fill:#ffe1e1`
+
+### 5.5 Step 5 — Permanent Note Generation
+
+For each atomic concept:
+1. Create file `Declarative-Title.md` in `10-CONTEXTS/[ContextName]/permanent-notes/`
+2. Apply template §3.2
+3. Fill `bloom_level` field in frontmatter
+4. Include prerequisite and related concept links
+5. Include 3–7 tags in `#CONTEXT-REFERENCE` format
+
+### 5.6 Step 6 — Study Plan Document
+
+Create `20-STUDY-PLANS/[ContextName]-Study-Plan.md` applying template §4.3.
+
+### 5.7 Step 7 — Index Updates
+
+**Master Index** (`00-INDEX/Master-Index.md`) — add entry:
 ```markdown
-## [Context-Name]
+## [ContextName]
 
-**Study Plan**: [[Context-Name-Study-Plan]]
-**Location**: `10-CONTEXTS/[Context-Name]/`
+**Study Plan**: [[ContextName-Study-Plan]]
+**Location**: `10-CONTEXTS/[ContextName]/`
 **Tags**: #Context-Reference
 **Notes**: [count] permanent notes
 **Status**: 🟢 Active / 🟡 In Progress / ⚪ Planned
-**Created**: YYYY-MM-DD
 ```
 
-Update `00-INDEX/Context-Map.md` with context relationships:
+**Context Map** (`00-INDEX/Context-Map.md`) — update Mermaid diagram with inter-context relationships.
 
-```mermaid
-graph LR
-    A[#ExistingContext] --> B[#NewContext]
-    B --> C[#FutureContext]
+---
+
+## 6. AI Model Instructions
+
+### 6.1 Generation Flow
+
+When receiving a request to generate a vault:
+
+1. **Extract the topic** from the user request
+2. **Create Context Name** in PascalCase
+3. **Execute atomic decomposition** per `.zettelkasten`
+4. **Classify each concept** by Bloom's Taxonomy level
+5. **Organize into 5 phases** of cognitive progression (§4.2)
+6. **Map dependencies** as DAG — validate no cycles
+7. **Generate all files** following templates and conventions
+8. **Create Mermaid diagrams** for dependencies and study paths
+9. **Populate indexes** (Master Index + Context Map)
+10. **Run validation checklist** (§7) before finalizing
+
+### 6.2 Expected Output Format
+
+```
+# Generated Vault: [ContextName]
+
+## Statistics
+- Permanent Notes: X
+- Study Phases: 5
+- Bloom Levels Covered: [list]
+- Total Tags: N
+- Prerequisite Relationships: Z
+
+## Files Created
+- ✅ .obsidian/ (copied)
+- ✅ 00-INDEX/Master-Index.md
+- ✅ 00-INDEX/Context-Map.md
+- ✅ 10-CONTEXTS/[ContextName]/permanent-notes/ (X notes)
+- ✅ 20-STUDY-PLANS/[ContextName]-Study-Plan.md
+- ✅ 30-MAPS/concept-maps/[ContextName]-Dependency-Graph.md
+
+## Validation
+- [x] All checks from §7 passed
 ```
 
-## Validation Checklist
+---
 
-Before finalizing a generated vault, verify:
+## 7. Validation Checklist (28 points)
 
-### Configuration Validation
+### 7.1 Configuration (5)
 
-- [ ] `.obsidian/` directory exists with all configuration files
+- [ ] `.obsidian/` exists with all configuration files
 - [ ] `app.json` has `alwaysUpdateLinks: true`
 - [ ] `graph.json` contains color groups for all note types
-- [ ] `appearance.json` enables `zettelkasten-styling` CSS snippet
+- [ ] `appearance.json` enables CSS snippet `zettelkasten-styling`
 - [ ] `templates.json` points to `40-RESOURCES/templates/`
 
-### Structure Validation
+### 7.2 Structure (4)
 
-- [ ] All required folders exist (`00-INDEX/`, `10-CONTEXTS/`, etc.)
+- [ ] All required folders exist (`00-INDEX/`, `10-CONTEXTS/`, `20-STUDY-PLANS/`, `30-MAPS/`, `40-RESOURCES/`)
 - [ ] `Master-Index.md` exists and lists all contexts
 - [ ] `Context-Map.md` exists with Mermaid dependency graph
 - [ ] Templates exist in `40-RESOURCES/templates/`
 
-### Content Validation
+### 7.3 Content (7)
 
-- [ ] All permanent notes follow naming convention `Declarative-Title.md`
-- [ ] All permanent notes are 200-300 words
-- [ ] All permanent notes have declarative titles
-- [ ] All permanent notes declare prerequisites
-- [ ] All permanent notes have minimum 3 tags in `#CONTEXT-REFERENCE` format
+- [ ] Permanent notes follow naming convention `Declarative-Title.md`
+- [ ] Permanent notes are 200–300 words
+- [ ] Titles are declarative (Subject-Verb-Object)
+- [ ] Prerequisites declared with WikiLinks `[[note]]`
+- [ ] Minimum 3 tags in `#CONTEXT-REFERENCE` format
 - [ ] All diagrams use Mermaid syntax
-- [ ] All internal links use WikiLinks format `[[note-title]]`
+- [ ] All internal links use WikiLinks `[[note]]`
 
-### Study Plan Validation
+### 7.4 Study Plan (5)
 
-- [ ] Study plan exists in `20-STUDY-PLANS/[Context-Name]-Study-Plan.md`
-- [ ] Study plan includes Mermaid dependency diagram
-- [ ] Study plan organizes notes into phases
-- [ ] Study plan links to all permanent notes
-- [ ] Study plan includes progress tracking Dataview query
+- [ ] Plan exists at `20-STUDY-PLANS/[ContextName]-Study-Plan.md`
+- [ ] Includes Mermaid dependency diagram
+- [ ] Concepts organized into 5 cognitive progression phases
+- [ ] Links to all permanent notes
+- [ ] Includes Dataview progress tracking query
 
-### Graph View Validation
+### 7.5 Graph View (7)
 
-- [ ] All notes appear in graph view
-- [ ] Permanent notes show in green
-- [ ] Literature notes show in blue
-- [ ] Fleeting notes show in purple
-- [ ] Study plans show in orange
-- [ ] Index files show in red
-- [ ] All links create visible connections
+- [ ] All notes appear in graph
+- [ ] Permanent notes = green
+- [ ] Literature notes = blue
+- [ ] Fleeting notes = purple
+- [ ] Study plans = orange
+- [ ] Index files = red
+- [ ] No orphaned notes (all connected)
 
-## AI Model Usage Instructions
+---
 
-When an AI model receives a request to generate a study plan vault:
+## 8. Common Mistakes — Avoid
 
-1. **Parse the subject/topic** from the user request
-2. **Create Context Name** in PascalCase (e.g., "MachineLearning", "WebSecurity")
-3. **Follow `.zettelkasten` specifications** to decompose topic into atomic concepts
-4. **Generate all required files** following templates and naming conventions
-5. **Create Mermaid diagrams** for dependencies and study paths
-6. **Populate Master Index** with the new context
-7. **Update Context Map** with relationships to other contexts (if applicable)
-8. **Run validation checklist** before finalizing
+| # | Mistake | Correction |
+|:--|:--------|:-----------|
+| 1 | Notes covering multiple concepts | SPLIT into separate notes |
+| 2 | Vague titles ("Introduction to X") | USE Subject-Verb-Object statements |
+| 3 | Missing prerequisites | ALWAYS declare dependencies |
+| 4 | More than 7 tags per note | KEEP focused and relevant |
+| 5 | Orphaned notes (no links) | CONNECT to the knowledge graph |
+| 6 | Non-Mermaid diagrams | USE Mermaid exclusively |
+| 7 | Markdown links `[text](link)` | USE WikiLinks `[[note]]` |
+| 8 | Notes outside `10-CONTEXTS/` | ORGANIZE in the correct folder |
+| 9 | Context missing from Master Index | ALWAYS update |
+| 10 | Generic tags (`#programming`) | USE specific `#Context-Reference` format |
+| 11 | Flat topic list in study plan | STRUCTURE by cognitive progression (Bloom) |
+| 12 | Circular dependencies | ENSURE DAG structure |
 
-### Output Format
+---
 
-The AI model should output:
-
-1. **Folder structure** with all files
-2. **File contents** for each note, template, and configuration
-3. **Summary report** with statistics:
-   - Total permanent notes created
-   - Total study phases
-   - Estimated study time
-   - Prerequisites identified
-   - Tag coverage
-
-### Example AI Prompt Response Structure
-
-```
-# Generated Vault: [Context-Name]
-
-## Statistics
-- Permanent Notes: X
-- Literature Notes: Y  
-- Study Phases: Z
-- Total Tags: N
-- Estimated Study Time: H hours
-
-## Files Created
-
-### Configuration
-- ✅ .obsidian/ (copied from template)
-
-### Index
-- ✅ 00-INDEX/Master-Index.md (updated)
-- ✅ 00-INDEX/Context-Map.md (updated)
-
-### Context: [Context-Name]
-- ✅ 10-CONTEXTS/[Context-Name]/permanent-notes/ (X notes)
-- ✅ 20-STUDY-PLANS/[Context-Name]-Study-Plan.md
-- ✅ 30-MAPS/concept-maps/[Context-Name]-Dependency-Graph.md
-
-## Validation
-- [x] All permanent notes are atomic
-- [x] All notes follow naming conventions
-- [x] All diagrams use Mermaid syntax
-- [x] Graph view properly configured
-- [x] Study plan includes all concepts
-
-## Next Steps
-1. Open vault in Obsidian
-2. Install recommended community plugins
-3. Review and customize study plan phases
-4. Begin with Phase 1 foundation concepts
-```
-
-## Example Folder Structure (REST APIs Context)
+## Example: REST APIs Vault
 
 ```
 vault-root/
@@ -680,83 +610,3 @@ vault-root/
     └── references/
         └── REST-API-References.md
 ```
-
-## Advanced Features
-
-### Dataview Queries for Study Plans
-
-Include these queries in study plan documents:
-
-**Progress by Status**:
-```dataview
-TABLE status as Status, tags as Tags
-FROM "10-CONTEXTS/{{context}}/permanent-notes"
-WHERE status != null
-SORT status DESC
-```
-
-**Notes by Prerequisites**:
-```dataview
-LIST prerequisites
-FROM "10-CONTEXTS/{{context}}/permanent-notes"
-WHERE prerequisites != null
-```
-
-**Tag Coverage**:
-```dataview
-TABLE length(tags) as "Tag Count", tags
-FROM "10-CONTEXTS/{{context}}/permanent-notes"
-SORT length(tags) DESC
-```
-
-### Breadcrumbs Configuration
-
-For Zettelkasten navigation, configure breadcrumbs in notes:
-
-```yaml
----
-up: [[parent-concept]]
-same: [[related-concept-1]], [[related-concept-2]]
-down: [[sub-concept-1]], [[sub-concept-2]]
----
-```
-
-### Journey Plugin Usage
-
-Create learning journeys for study paths:
-
-1. Open journey pane
-2. Add starting note (foundation concept)
-3. Follow prerequisite/related links
-4. Save journey as "Path: [Topic Name]"
-
-## Enforcement Rules
-
-1. **MANDATORY**: All diagrams must be Mermaid syntax
-2. **MANDATORY**: All tags must be `#CONTEXT-REFERENCE` format (PascalCase)
-3. **MANDATORY**: All permanent notes must be atomic (200-300 words exactly)
-4. **MANDATORY**: All permanent notes must have declarative titles (e.g., "HTTP-methods-define-request-semantics")
-5. **MANDATORY**: All permanent notes must declare prerequisites with WikiLinks
-6. **MANDATORY**: All permanent notes must have minimum 3 tags, maximum 7 tags
-7. **MANDATORY**: All contexts must have dedicated folders in `10-CONTEXTS/`
-8. **MANDATORY**: All study plans must include Mermaid dependency diagrams
-9. **MANDATORY**: All file names must follow naming conventions (declarative titles for permanent notes)
-10. **MANDATORY**: All notes must support Graph View navigation (no orphaned notes)
-11. **MANDATORY**: `.obsidian/` directory must be copied to vault root
-12. **MANDATORY**: Templates must be placed in `40-RESOURCES/templates/`
-13. **MANDATORY**: All internal links must use WikiLinks format `[[note-title]]`, never markdown links
-14. **MANDATORY**: Master Index and Context Map must be updated for each new context
-15. **MANDATORY**: All permanent notes must include frontmatter with type, context, and tags
-
-## Common Pitfalls to Avoid
-
-1. ❌ **Non-atomic notes**: Notes covering multiple concepts - SPLIT into separate notes
-2. ❌ **Vague titles**: "Introduction to X" - USE declarative statements instead
-3. ❌ **Missing prerequisites**: Notes without prerequisite links - ALWAYS declare dependencies
-4. ❌ **Tag overload**: More than 7 tags per note - KEEP focused and relevant
-5. ❌ **Orphaned notes**: Notes with no links in/out - CONNECT to knowledge graph
-6. ❌ **Non-Mermaid diagrams**: Images or other formats - USE Mermaid exclusively
-7. ❌ **Wrong link format**: `[text](link)` - USE `[[wikilink]]` format
-8. ❌ **Missing context folder**: Notes outside `10-CONTEXTS/[Context-Name]/` - ORGANIZE properly
-9. ❌ **Incomplete index**: New context not in Master Index - UPDATE always
-10. ❌ **Generic tags**: `#programming`, `#learning` - USE specific `#Context-Reference` format

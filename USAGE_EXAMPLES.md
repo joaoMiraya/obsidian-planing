@@ -173,6 +173,20 @@ make example-graphql   # GraphQL APIs
 
 **Output**: Optimized prompt displayed in terminal, ready to paste into ChatGPT, Claude, or any AI model.
 
+### Example 8b: Generate in a Different Language
+
+```bash
+# Generate vault with content in Portuguese
+./scripts/generate-vault.sh \
+  --topic "Kubernetes" \
+  --lang pt
+
+# Or via Makefile
+make generate TOPIC="Kubernetes" LANGUAGE=pt
+```
+
+**What happens**: All generated content (descriptions, explanations, examples, study plans) will be written in Portuguese. File names, tags, and technical terms remain in English.
+
 ### Example 9: Custom Output Directory
 
 ```bash

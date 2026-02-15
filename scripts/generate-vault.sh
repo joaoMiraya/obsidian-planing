@@ -43,6 +43,7 @@ print_help() {
     echo "  -t, --topic TOPIC        Study topic/subject (required)"
     echo "  -c, --context NAME       Context name (default: auto-generated from topic)"
     echo "  -o, --output DIR         Output directory (default: ./generated-vaults)"
+    echo "  -l, --lang LANG          Output language (default: en) (e.g., pt, es, fr, de)"
     echo "  -p, --prompt-only        Generate optimized prompt only (skip vault structure)"
     echo "  -v, --validate           Validate existing vault"
     echo "  -h, --help               Show this help message"
@@ -51,6 +52,7 @@ print_help() {
     echo "  $0 --topic \"Kubernetes\""
     echo "  $0 --topic \"Machine Learning\" --context MachineLearning"
     echo "  $0 --topic \"GraphQL APIs\" --prompt-only"
+    echo "  $0 --topic \"Kubernetes\" --lang pt"
     echo "  $0 --validate --output ./my-vault"
     echo ""
 }
@@ -67,233 +69,75 @@ optimize_prompt() {
     local topic="$1"
     local context_name="$2"
     local model="$3"
+    local lang="$4"
+    
+    local lang_instruction=""
+    if [ -n "$lang" ] && [ "$lang" != "en" ]; then
+        lang_instruction="
+> **OUTPUT LANGUAGE**: All generated content (titles, descriptions, explanations, examples, study plans) MUST be written in **${lang}**. Keep technical terms, file names, tag names, and Mermaid node IDs in English.
+"
+    fi
     
     cat <<EOF
-# OPTIMIZED VAULT GENERATION REQUEST
+# Obsidian Vault Generation Request
+${lang_instruction}
+## Context
 
-## CRITICAL INSTRUCTIONS
+Generate a complete, functional Obsidian vault for studying: **${topic}**
 
-You are generating a complete, production-ready Obsidian vault for studying: **${topic}**
+### Required Reference Files
 
-### REQUIRED FILES TO FOLLOW
+1. **\`.instructions\`** — Vault architecture, templates, conventions, validation checklist (§1–§8)
+2. **\`.zettelkasten\`** — Atomic decomposition methodology, Bloom's Taxonomy, quality criteria (§1–§7)
 
-1. **PRIMARY GUIDE**: Read and follow \`.instructions\` (761 lines)
-   - Contains vault architecture, templates, validation rules
-   - Defines folder structure, naming conventions, graph view config
-   - Includes 15 MANDATORY enforcement rules
-   - Provides 28-point validation checklist
+### Methodology
 
-2. **METHODOLOGY**: Read and follow \`.zettelkasten\` (237 lines)
-   - Contains atomic concept decomposition process (5 steps)
-   - Defines quality criteria (atomicity, connectivity, completeness)
-   - Provides examples of proper atomic concepts
-   - Includes common mistakes to avoid
+Follow the 7-step process from \`.zettelkasten\` (§2):
+1. Identify first principles (domain axioms)
+2. Map conceptual domains (3–6 clusters)
+3. Extract atomic concepts (5–10 per domain)
+4. Classify by Bloom level (remember → create)
+5. Map dependencies as DAG (no cycles)
+6. Create declarative titles (Subject-Verb-Object)
+7. Assign tags \`#CONTEXT-REFERENCE\`
 
-### MANDATORY DELIVERABLES
+### Cognitive Progression (5 phases — see .instructions §4.2)
 
-#### 1. Complete Vault Structure
-\`\`\`
-${context_name}-vault/
-├── .obsidian/              # Copy entire directory from repository
-├── 00-INDEX/
-│   ├── Master-Index.md     # List this context with metadata
-│   └── Context-Map.md      # Mermaid diagram with context relationships
-├── 10-CONTEXTS/
-│   └── ${context_name}/
-│       ├── permanent-notes/    # 15-30 atomic notes (200-300 words each)
-│       ├── literature-notes/   # 3-5 source references
-│       └── fleeting-notes/     # 5-10 quick captures
-├── 20-STUDY-PLANS/
-│   └── ${context_name}-Study-Plan.md  # With Mermaid learning path
-├── 30-MAPS/
-│   └── concept-maps/
-│       └── ${context_name}-Dependency-Graph.md
-└── 40-RESOURCES/
-    ├── templates/          # Copy all 3 templates from .instructions
-    ├── references/
-    └── attachments/
-\`\`\`
+| Phase | Bloom | Focus |
+|:------|:------|:------|
+| 1 — Foundations | Remember, Understand | Axioms, definitions, primary principles |
+| 2 — Structural Concepts | Understand, Apply | Patterns, mechanisms, relationships |
+| 3 — Application | Apply, Analyze | Use cases, implementations, trade-offs |
+| 4 — Analysis & Integration | Analyze, Evaluate | Cross-domain integration, anti-patterns |
+| 5 — Creation & Extension | Evaluate, Create | Original projects, contributions |
 
-#### 2. Atomic Concept Decomposition Table
+### Required Deliverables
 
-Using \`.zettelkasten\` methodology, create table with:
-- **Sequence**: Learning order (1-N)
-- **Declarative Title**: Format \`Subject-Verb-Object\` (e.g., "Docker-uses-namespaces-for-process-isolation")
-- **Brief Description**: 50-100 words explaining concept and why it matters
-- **Prerequisites**: WikiLinks to required concepts (\`[[concept-1]]\`, \`[[concept-2]]\`) or "None"
-- **Tags**: 3-5 tags in \`#CONTEXT-REFERENCE\` format (e.g., \`#${context_name}-Fundamentals #Architecture-Patterns\`)
+1. **Atomic decomposition table** with columns: Seq, Declarative Title, Description, Prerequisites, Bloom, Tags
+2. **15–50 permanent notes** (200–300 words each) in \`10-CONTEXTS/${context_name}/permanent-notes/\`
+3. **Study plan** at \`20-STUDY-PLANS/${context_name}-Study-Plan.md\` with Mermaid diagram and 5 phases
+4. **Master Index** and **Context Map** updated in \`00-INDEX/\`
+5. **Dependency graph** (Mermaid) in \`30-MAPS/concept-maps/\`
 
-Minimum 15 concepts, maximum 50 concepts.
+### Conventions (see .instructions §2)
 
-#### 3. All Permanent Notes
+- Titles: \`Subject-Verb-Object\` with hyphens (e.g., \`Docker-uses-namespaces-for-process-isolation\`)
+- Tags: \`#CONTEXT-REFERENCE\` in PascalCase, 3–7 per note
+- Links: WikiLinks \`[[note]]\` exclusively
+- Diagrams: Mermaid exclusively
+- Frontmatter: include \`bloom_level\` in each permanent note
 
-For EACH concept in the table, generate complete markdown file:
+### Validation (see .instructions §7)
 
-**File name**: \`Declarative-Title.md\` (use the declarative title directly, no timestamp prefix)
-
-**Location**: \`10-CONTEXTS/${context_name}/permanent-notes/\`
-
-**Template** (from \`.instructions\`):
-\`\`\`markdown
----
-created: YYYY-MM-DD
-modified: YYYY-MM-DD
-type: permanent
-context: ${context_name}
-sequence: N
-tags: [tag1, tag2, tag3]
----
-
-# [Declarative-Title]
-
-**Prerequisites**: [[prereq-1]] [[prereq-2]]
-
-**Status**: 🟢 Complete
+Verify ALL 28 points before finalizing:
+- §7.1 Configuration (5) · §7.2 Structure (4) · §7.3 Content (7) · §7.4 Study Plan (5) · §7.5 Graph View (7)
 
 ---
 
-## Concept
+**TOPIC**: ${topic}
+**CONTEXT NAME**: ${context_name}
 
-[200-300 word explanation of ONE atomic concept]
-
-## Example
-
-[Concrete, practical example demonstrating the concept]
-
-## Application
-
-[When/where this concept is used in real-world scenarios]
-
-## Related Concepts
-
-- [[related-concept-1]]
-- [[related-concept-2]]
-- [[related-concept-3]]
-
----
-
-**Tags**: #${context_name}-Tag1 #Category-Tag2 #Domain-Tag3
-**Source**: [if applicable]
-\`\`\`
-
-#### 4. Study Plan
-
-**File**: \`20-STUDY-PLANS/${context_name}-Study-Plan.md\`
-
-Must include:
-- Overview with domain, goal, prerequisites
-- Mermaid flowchart showing learning path dependencies
-- 3 phases: Foundation → Core → Advanced
-- Checklist for each concept with links
-- Dataview query for progress tracking
-- Completion criteria per phase
-
-#### 5. Mermaid Diagrams
-
-ALL diagrams must use Mermaid syntax. Include:
-
-**Dependency Graph** (in Study Plan):
-\`\`\`mermaid
-flowchart TD
-    A[Foundation-Concept-1] --> B[Core-Concept-1]
-    A --> C[Core-Concept-2]
-    B --> D[Advanced-Concept-1]
-    C --> D
-    
-    style A fill:#e1f5ff
-    style B fill:#fff4e1
-    style D fill:#ffe1e1
-\`\`\`
-
-**Context Map** (in 00-INDEX/Context-Map.md):
-\`\`\`mermaid
-graph LR
-    A[#${context_name}] --> B[#RelatedContext1]
-    A --> C[#RelatedContext2]
-\`\`\`
-
-### VALIDATION REQUIREMENTS
-
-Before submitting, verify ALL 28 checks from \`.instructions\`:
-
-**Configuration (5 checks)**:
-- [ ] .obsidian/ directory copied with all 11 files
-- [ ] app.json has alwaysUpdateLinks: true
-- [ ] graph.json contains color groups
-- [ ] appearance.json enables zettelkasten-styling CSS
-- [ ] templates.json points to 40-RESOURCES/templates/
-
-**Structure (4 checks)**:
-- [ ] All folders created (00-INDEX/, 10-CONTEXTS/, etc.)
-- [ ] Master-Index.md lists this context
-- [ ] Context-Map.md has Mermaid graph
-- [ ] All 3 templates in 40-RESOURCES/templates/
-
-**Content (7 checks)**:
-- [ ] All permanent notes: Declarative-Title.md
-- [ ] All notes are 200-300 words (atomic)
-- [ ] All titles are declarative (Concept-verb-object)
-- [ ] All prerequisites declared with WikiLinks
-- [ ] All notes have 3-5 tags in #CONTEXT-REFERENCE format
-- [ ] All diagrams use Mermaid syntax
-- [ ] All links use WikiLinks format [[note]]
-
-**Study Plan (5 checks)**:
-- [ ] Study plan in 20-STUDY-PLANS/${context_name}-Study-Plan.md
-- [ ] Includes Mermaid dependency diagram
-- [ ] Organized into 3 phases
-- [ ] Links to all permanent notes
-- [ ] Includes Dataview progress query
-
-**Graph View (7 checks)**:
-- [ ] All notes will appear in graph
-- [ ] Permanent notes tagged/located for green color
-- [ ] Literature notes tagged/located for blue color
-- [ ] No orphaned notes (all connected)
-- [ ] Prerequisites create valid DAG (no cycles)
-- [ ] Tags enable cross-referencing
-- [ ] Context appears in Master Index
-
-### OUTPUT FORMAT
-
-Provide complete file contents for:
-1. Atomic concept decomposition table (markdown table)
-2. Every permanent note file (full markdown with frontmatter)
-3. Study plan file (with Mermaid diagrams)
-4. Master-Index.md update (add this context)
-5. Context-Map.md update (add relationships)
-
-Include summary statistics:
-- Total permanent notes created: X
-- Total study phases: 3
-- Total tags defined: Y
-- Prerequisite relationships: Z
-- Estimated study time: H hours
-
-### QUALITY EMPHASIS
-
-Follow \`.zettelkasten\` principles:
-- **Atomicity**: ONE idea per note
-- **Declarative**: Titles express complete statements
-- **Connected**: Every note links to prerequisites and related concepts
-- **Tagged**: 3-5 specific tags, not generic
-- **Testable**: Concepts can be demonstrated with examples
-
-Avoid common mistakes from \`.zettelkasten\`:
-- ❌ Vague titles like "Introduction to X"
-- ❌ Multiple ideas in one note
-- ❌ Missing prerequisites
-- ❌ Generic tags like #programming
-- ❌ Circular dependencies
-- ❌ Notes too granular or too broad
-
----
-
-## TOPIC: ${topic}
-## CONTEXT NAME: ${context_name}
-## TARGET: Complete production-ready Obsidian vault
-
-BEGIN GENERATION NOW.
+BEGIN GENERATION.
 EOF
 }
 
@@ -302,11 +146,19 @@ build_generation_prompt() {
     local topic="$1"
     local context_name="$2"
     local vault_dir="$3"
+    local lang="$4"
     local current_date=$(date +"%Y-%m-%d")
+
+    local lang_instruction=""
+    if [ -n "$lang" ] && [ "$lang" != "en" ]; then
+        lang_instruction="
+IMPORTANT — OUTPUT LANGUAGE: All generated content (titles, descriptions, explanations, examples, study plans) MUST be written in **${lang}**. Keep technical terms, file names, tag names, and Mermaid node IDs in English.
+"
+    fi
 
     cat <<PROMPT_EOF
 You MUST generate a complete Obsidian study vault about "${topic}".
-
+${lang_instruction}
 IMPORTANT: Read the files ".instructions" and ".zettelkasten" in this repository FIRST.
 They contain the full methodology, templates, naming conventions, and validation rules you must follow.
 
@@ -431,13 +283,14 @@ generate_vault() {
     local context_name="$2"
     local output_dir="$3"
     local prompt_only="$4"
+    local lang="$5"
     
     local vault_dir="${output_dir}/${context_name}-vault"
     
     if [ "$prompt_only" = true ]; then
         # Print prompt to stdout only (for manual copy/paste into ChatGPT/Claude)
         echo -e "${BLUE}📝 Generating optimized prompt...${NC}"
-        local optimized_prompt=$(optimize_prompt "$topic" "$context_name" "")
+        local optimized_prompt=$(optimize_prompt "$topic" "$context_name" "" "$lang")
         echo -e "${GREEN}✅ Optimized prompt generated!${NC}"
         echo ""
         echo -e "${CYAN}════════════════════════════════════════════════════════════${NC}"
@@ -459,7 +312,7 @@ generate_vault() {
     if ! command -v gh &> /dev/null || ! gh copilot -- --version &> /dev/null; then
         echo -e "${YELLOW}⚠️  GitHub Copilot CLI not available. Falling back to prompt-only mode.${NC}"
         echo ""
-        local optimized_prompt=$(optimize_prompt "$topic" "$context_name" "")
+        local optimized_prompt=$(optimize_prompt "$topic" "$context_name" "" "$lang")
         local prompt_file="${vault_dir}/PROMPT.md"
         echo "$optimized_prompt" > "$prompt_file"
         echo -e "${GREEN}✓${NC} Saved optimized prompt to ${prompt_file}"
@@ -481,7 +334,7 @@ generate_vault() {
     echo -e "${YELLOW}   This may take a few minutes depending on the topic complexity.${NC}"
     echo ""
     
-    local generation_prompt=$(build_generation_prompt "$topic" "$context_name" "$vault_dir")
+    local generation_prompt=$(build_generation_prompt "$topic" "$context_name" "$vault_dir" "$lang")
     
     # Save prompt for reference
     echo "$generation_prompt" > "${vault_dir}/PROMPT.md"
@@ -672,6 +525,7 @@ main() {
     local output_dir="${OUTPUT_DIR}"
     local prompt_only=false
     local validate_mode=false
+    local lang="en"
     
     # Parse arguments
     while [[ $# -gt 0 ]]; do
@@ -691,6 +545,10 @@ main() {
             -p|--prompt-only)
                 prompt_only=true
                 shift
+                ;;
+            -l|--lang)
+                lang="$2"
+                shift 2
                 ;;
             -v|--validate)
                 validate_mode=true
@@ -740,11 +598,12 @@ main() {
     echo "  Topic: ${topic}"
     echo "  Context: ${context_name}"
     echo "  Output: ${output_dir}/${context_name}-vault"
+    echo "  Language: ${lang}"
     echo "  Prompt only: ${prompt_only}"
     echo ""
     
     # Generate vault
-    generate_vault "$topic" "$context_name" "$output_dir" "$prompt_only"
+    generate_vault "$topic" "$context_name" "$output_dir" "$prompt_only" "$lang"
     
     echo ""
     echo -e "${GREEN}✅ Done!${NC}"
