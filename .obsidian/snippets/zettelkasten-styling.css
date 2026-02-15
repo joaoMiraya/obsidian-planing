@@ -1,0 +1,101 @@
+/* Zettelkasten Styling for Obsidian */
+
+/* Permanent Notes - Green highlight */
+.markdown-preview-view a[href*="permanent-notes"],
+.cm-hmd-internal-link[href*="permanent-notes"] {
+  color: #22c55e !important;
+  font-weight: 500;
+}
+
+/* Literature Notes - Blue highlight */
+.markdown-preview-view a[href*="literature-notes"],
+.cm-hmd-internal-link[href*="literature-notes"] {
+  color: #3b82f6 !important;
+  font-weight: 500;
+}
+
+/* Fleeting Notes - Yellow highlight */
+.markdown-preview-view a[href*="fleeting-notes"],
+.cm-hmd-internal-link[href*="fleeting-notes"] {
+  color: #eab308 !important;
+  font-weight: 500;
+}
+
+/* Tag styling - CONTEXT-REFERENCE format */
+.tag {
+  background: var(--background-modifier-border);
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-family: var(--font-monospace);
+  font-size: 0.85em;
+}
+
+/* Prerequisites section styling */
+.markdown-preview-view strong:contains("Prerequisites"),
+.markdown-preview-view strong:contains("Related") {
+  color: var(--text-accent);
+  font-size: 1.1em;
+}
+
+/* Declarative titles - emphasize atomic concepts */
+.markdown-preview-view h1 {
+  border-bottom: 2px solid var(--text-accent);
+  padding-bottom: 0.3em;
+  margin-bottom: 1em;
+}
+
+/* Mermaid diagram styling */
+.mermaid {
+  background: var(--background-secondary);
+  border-radius: 8px;
+  padding: 1em;
+  margin: 1em 0;
+}
+
+/* Study plan sections */
+.markdown-preview-view h3:contains("Phase") {
+  color: var(--text-accent);
+  border-left: 4px solid var(--text-accent);
+  padding-left: 0.5em;
+}
+
+/* Graph view enhancements */
+.graph-view.color-fill-tag {
+  opacity: 0.8;
+}
+
+/* Backlinks panel */
+.backlink-pane {
+  font-size: 0.9em;
+}
+
+/* File explorer - context folders */
+.nav-folder-title[data-path*="10-CONTEXTS"] {
+  color: #22c55e;
+  font-weight: 600;
+}
+
+.nav-folder-title[data-path*="20-STUDY-PLANS"] {
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.nav-folder-title[data-path*="00-INDEX"] {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+/* Atomic concept emphasis */
+.markdown-preview-view h2:contains("Concept") {
+  color: var(--text-accent);
+}
+
+.markdown-preview-view h2:contains("Example") {
+  color: var(--text-success);
+}
+
+/* Word count for atomic notes (200-300 words) */
+.status-bar-item.plugin-word-count {
+  color: var(--text-muted);
+  font-family: var(--font-monospace);
+}

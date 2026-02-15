@@ -1,0 +1,13 @@
+{
+  "pluginEnabledStatus": {
+    "dataview": true,
+    "templater-obsidian": true,
+    "obsidian-git": false,
+    "obsidian-mind-map": true,
+    "obsidian-excalidraw-plugin": true,
+    "breadcrumbs": true,
+    "obsidian-journey-plugin": true,
+    "obsidian-kanban": true,
+    "obsidian-link-view": true
+  }
+}

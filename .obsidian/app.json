@@ -1,0 +1,33 @@
+{
+  "alwaysUpdateLinks": true,
+  "attachmentFolderPath": "40-RESOURCES/attachments",
+  "newFileLocation": "current",
+  "newLinkFormat": "shortest",
+  "useMarkdownLinks": false,
+  "showFrontmatter": true,
+  "foldHeading": true,
+  "foldIndent": true,
+  "showLineNumber": false,
+  "spellcheck": true,
+  "spellcheckLanguages": [
+    "en-US",
+    "pt-BR"
+  ],
+  "strictLineBreaks": false,
+  "showIndentGuide": true,
+  "readableLineLength": true,
+  "defaultViewMode": "source",
+  "livePreview": true,
+  "promptDelete": true,
+  "autoPairBrackets": true,
+  "autoPairMarkdown": true,
+  "smartIndentList": true,
+  "foldHeading": true,
+  "showUnsupportedFiles": false,
+  "pdfExportSettings": {
+    "pageSize": "A4",
+    "landscape": false,
+    "margin": "0",
+    "downscalePercent": 100
+  }
+}
